@@ -11,3 +11,14 @@ script:
   # waiting for a failure
   - docker run -e CI=true drewbib/docker-react npm run test
   # - docker run drewbib/docker-react npm run test -- --coverage
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "docker-fe"
+  env: "Docker-fe-env"
+  bucket_name: "elasticbeanstalk-us-east-2-991826297421"
+  bucket_path: "docker-fe" # should match the app name exactly
+  on:
+    branch: main
+  access_key_id: "$AWS_ACCESS_KEY"
+  access_secret_id: "$AWS_SECRET_KEY"
