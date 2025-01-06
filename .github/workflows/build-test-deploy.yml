@@ -1,6 +1,4 @@
 name: docker-workflow
-runs:
-  'docker'
 on: pull_request
 jobs:
   build:
@@ -10,4 +8,3 @@ jobs:
         uses: actions/checkout@v3
       - name: Build the image
         run: docker build -t drewbib/docker-react -f Dockerfile.dev
-        
