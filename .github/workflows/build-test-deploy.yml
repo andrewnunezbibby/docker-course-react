@@ -1,0 +1,13 @@
+name: docker-workflow
+runs:
+  'docker'
+on: pull_request
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+      - name: Build the image
+        run: docker build -t drewbib/docker-react -f Dockerfile.dev
+        
