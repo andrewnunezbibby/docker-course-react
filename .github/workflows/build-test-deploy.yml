@@ -1,8 +1,5 @@
 name: docker-workflow
 on: pull_request
-permissions:
-  id-token: write # This is required for requesting the JWT
-  contents: read
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,11 +17,14 @@ jobs:
         run: docker run -e CI=true drewbib/docker-react npm run test
   deploy:
     runs-on: ubuntu-latest
-
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read
     needs: build
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Create ZIP deployment package
         run: zip -r deploy_package.zip ./
@@ -32,8 +32,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-access-key-id: secrets.AWS_ACCESS_KEY
+          aws-secret-access-key: secrets.AWS_SECRET_KEY
           aws-region: "us-east-2"
 
       - name: Upload package to S3 bucket
